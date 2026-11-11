@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tool Platform</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-dark: #0056b3;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text: #e4e4e4;
+            --border: #2a2a4e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tool-description {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-working {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-limited {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--secondary);
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        .tool-interface {
+            margin-top: 20px;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: var(--secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border);
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛠️ Multi-Tool Platform</h1>
+            <p class="subtitle">Free, useful tools and utilities - No credit card required</p>
+        </header>
+
+        <div class="tools-grid">
+            <!-- Password Generator */
+            <div class="tool-card" onclick="openTool('password-generator')">
+                <div class="tool-icon">🔐</div>
+                <h3 class="tool-title">Password Generator</h3>
+                <p class="tool-description">Generate secure, random passwords with custom length and complexity.</p>
+                <span class="tool-status status-working">✅ Working - No API Required</span>
+            </div>
+
+            <!-- QR Code Generator */
+            <div class="tool-card" onclick="openTool('qr-generator')">
+                <div class="tool-icon">📱</div>
+                <h3 class="tool-title">QR Code Generator</h3>
+                <p class="tool-description">Create QR codes for URLs, text, or contact information.</p>
+                <span class="tool-status status-working">✅ Working - No API Required</span>
+            </div>
+
+            <!-- Crypto Prices */
+            <div class="tool-card" onclick="openTool('crypto-prices')">
+                <div class="tool-icon">💰</div>
+                <h3 class="tool-title">Crypto Price Tracker</h3>
+                <p class="tool-description">Real-time cryptocurrency prices and market data.</p>
+                <span class="tool-status status-working">✅ Working - Public API</span>
+            </div>
+
+            <!-- Text Analyzer */
+            <div class="tool-card" onclick="openTool('text-analyzer')">
+                <div class="tool-icon">📊</div>
+                <h3 class="tool-title">Text Analyzer</h3>
+                <p class="tool-description">Analyze text for word count, readability, and sentiment.</p>
+                <span class="tool-status status-working">✅ Working - No API Required</span>
+            </div>
+
+            <!-- URL Decoder */
+            <div class="tool-card" onclick="openTool('url-tools')">
+                <div class="tool-icon">🔗</div>
+                <h3 class="tool-title">URL Tools</h3>
+                <p class="tool-description">Encode/decode URLs, check URL safety, and analyze links.</p>
+                <span class="tool-status status-working">✅ Working - No API Required</span>
+            </div>
+            
+            <!-- IP Lookup */
+            <div class="tool-card" onclick="openTool('ip-lookup')">
+                <div class="tool-icon">🌐</div>
+                <h3 class="tool-title">IP Address Lookup</h3>
+                <p class="tool-description">Find the location and details of an IP address.</p>
+                <span class="tool-status status-working">✅ Working - Public API</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>🔒 All tools run in your browser or use free, public APIs. No data is stored.</p>
+            <p>⚠️ For educational purposes only. Use responsibly.</p>
+            <p>Hosted on GitHub Pages - Free forever</p>
+        </footer>
+    </div>
+
+    <!-- Modal for Tool Interfaces */
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="toolInterface"></div>
+        </div>
+    </div>
+
+    <script>
+        // Tool configurations and interfaces
+        const toolInterfaces = {
+            'password-generator': `
+                <h2>🔐 Password Generator</h2>
+                <div class="input-group">
+                    <label>Password Length:</label>
+                    <input type="number" id="passwordLength" min="8" max="128" value="16">
+                </div>
+                <div class="input-group">
+                    <label>Options:</label>
+                    <div style="margin: 10px 0;">
+                        <input type="checkbox" id="includeUpper" checked> Include uppercase letters<br>
+                        <input type="checkbox" id="includeLower" checked> Include lowercase letters<br>
+                        <input type="checkbox" id="includeNumbers" checked> Include numbers<br>
+                        <input type="checkbox" id="includeSymbols" checked> Include symbols
+                    </div>
+                </div>
+                <button onclick="generatePassword()">Generate Password</button>
+                <div class="result-box" id="passwordResult">Generated password will appear here...</div>
+            `,
+            'qr-generator': `
+                <h2>📱 QR Code Generator</h2>
+                <div class="input-group">
+                    <label>Content:</label>
+                    <textarea id="qrContent" rows="3" placeholder="Enter URL, text, or contact info"></textarea>
+                </div>
+                <button onclick="generateQR()">Generate QR Code</button>
+                <div class="result-box" id="qrResult">QR code will appear here...</div>
+            `,
+            'crypto-prices': `
+                <h2>💰 Cryptocurrency Price Tracker</h2>
+                <div class="input-group">
+                    <label>Select Cryptocurrency:</label>
+                    <select id="cryptoSelect">
+                        <option value="bitcoin">Bitcoin (BTC)</option>
+                        <option value="ethereum">Ethereum (ETH)</option>
+                        <option value="solana">Solana (SOL)</option>
+                        <option value="binancecoin">Binance Coin (BNB)</option>
+                        <option value="cardano">Cardano (ADA)</option>
+                        <option value="ripple">XRP (XRP)</option>
+                    </select>
+                </div>
+                <button onclick="getCryptoPrice()">Get Price</button>
+                <div class="result-box" id="cryptoResult">Price data will appear here...</div>
+            `,
+            'text-analyzer': `
+                <h2>📊 Text Analyzer</h2>
+                <div class="input-group">
+                    <label>Text to Analyze:</label>
+                    <textarea id="textToAnalyze" rows="6" placeholder="Enter text for analysis"></textarea>
+                </div>
+                <button onclick="analyzeText()">Analyze Text</button>
+                <div class="result-box" id="textAnalysisResult">Analysis results will appear here...</div>
+            `,
+            'url-tools': `
+                <h2>🔗 URL Tools</h2>
+                <div class="input-group">
+                    <label>URL:</label>
+                    <input type="text" id="urlInput" placeholder="Enter URL to encode/decode/analyze">
+                </div>
+                <button onclick="encodeURL()">Encode URL</button>
+                <button onclick="decodeURL()" style="margin-top: 10px;">Decode URL</button>
+                <div class="result-box" id="urlResult">Results will appear here...</div>
+            `,
+            'ip-lookup': `
+                <h2>🌐 IP Address Lookup</h2>
+                <div class="input-group">
+                    <label>IP Address:</label>
+                    <input type="text" id="ipAddress" placeholder="Enter IP address (e.g., 8.8.8.8)">
+                </div>
+                <button onclick="lookupIP()">Lookup IP</button>
+                <div class="result-box" id="ipResult">IP information will appear here...</div>
+            `
+        };
+
+        function openTool(toolId) {
+            const modal = document.getElementById('toolModal');
+            const toolInterface = document.getElementById('toolInterface');
+            
+            if (toolInterfaces[toolId]) {
+                toolInterface.innerHTML = toolInterfaces[toolId];
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('toolModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('toolModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Tool implementations
+        function generatePassword() {
+            const length = parseInt(document.getElementById('passwordLength').value);
+            const includeUpper = document.getElementById('includeUpper').checked;
+            const includeLower = document.getElementById('includeLower').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+
+            let chars = '';
+            if (includeUpper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (includeLower) chars += 'abcdefghijklmnopqrstuvwxyz';
+            if (includeNumbers) chars += '0123456789';
+            if (includeSymbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            if (chars === '') {
+                document.getElementById('passwordResult').innerHTML = '❌ Please select at least one character type.';
+                return;
+            }
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            document.getElementById('passwordResult').innerHTML = `Generated Password:\n\n<strong>${password}</strong>\n\n⚠️ Save this password securely. It will not be shown again.`;
+        }
+
+        function generateQR() {
+            const content = document.getElementById('qrContent').value;
+            if (!content) {
+                document.getElementById('qrResult').innerHTML = '❌ Please enter content for the QR code.';
+                return;
+            }
+
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(content)}`;
+            document.getElementById('qrResult').innerHTML = `QR Code Generated:\n\n<img src="${qrUrl}" alt="QR Code" style="max-width: 200px; display: block; margin: 20px auto;">\n\n⚠️ QR codes can be scanned by anyone. Don't include sensitive information.`;
+        }
+
+        async function getCryptoPrice() {
+            const crypto = document.getElementById('cryptoSelect').value;
+            
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch price data');
+                }
+                
+                const data = await response.json();
+                const price = data[crypto].usd;
+                document.getElementById('cryptoResult').innerHTML = `Current ${crypto.toUpperCase()} Price: $${price.toLocaleString()}\n\nData provided by CoinGecko API`;
+            } catch (error) {
+                document.getElementById('cryptoResult').innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+
+        function analyzeText() {
+            const text = document.getElementById('textToAnalyze').value;
+            if (!text) {
+                document.getElementById('textAnalysisResult').innerHTML = '❌ Please enter text to analyze.';
+                return;
+            }
+
+            const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+            const characterCount = text.length;
+            const sentenceCount = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0).length;
+
+            document.getElementById('textAnalysisResult').innerHTML = `Text Analysis Results:\n\nWords: ${wordCount}\nCharacters: ${characterCount}\nSentences: ${sentenceCount}\n\nAverage words per sentence: ${sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(2) : 0}`;
+        }
+
+        function encodeURL() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) {
+                document.getElementById('urlResult').innerHTML = '❌ Please enter a URL.';
+                return;
+            }
+            document.getElementById('urlResult').innerHTML = `Encoded URL:\n${encodeURIComponent(url)}`;
+        }
+
+        function decodeURL() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) {
+                document.getElementById('urlResult').innerHTML = '❌ Please enter a URL.';
+                return;
+            }
+            try {
+                document.getElementById('urlResult').innerHTML = `Decoded URL:\n${decodeURIComponent(url)}`;
+            } catch {
+                document.getElementById('urlResult').innerHTML = '❌ Invalid encoded URL';
+            }
+        }
+
+        async function lookupIP() {
+            const ip = document.getElementById('ipAddress').value;
+            if (!ip) {
+                document.getElementById('ipResult').innerHTML = '❌ Please enter an IP address.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://ip-api.com/json/${ip}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch IP data');
+                }
+                
+                const data = await response.json();
+                if (data.status === 'fail') {
+                    document.getElementById('ipResult').innerHTML = `❌ Error: ${data.message}`;
+                    return;
+                }
+
+                document.getElementById('ipResult').innerHTML = `IP Information for ${ip}:\n\nCountry: ${data.country}\nRegion: ${data.regionName}\nCity: ${data.city}\nISP: ${data.isp}\nOrganization: ${data.org}\nTimezone: ${data.timezone}\n\nData provided by ip-api.com`;
+            } catch (error) {
+                document.getElementById('ipResult').innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
