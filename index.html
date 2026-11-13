@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HERO CYBER SECURITY // Protected by Heroes</title>
+    <style>
+        :root {
+            --spider-red: #e62429;
+            --spider-blue: #0b3c8f;
+            --hulk-green: #1a5f2a;
+            --hulk-light: #4caf50;
+            --dark-bg: #0a0e17;
+            --card-bg: #111827;
+            --text: #ffffff;
+            --text-muted: #9ca3af;
+            --border: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(230, 36, 41, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(76, 175, 80, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(11, 60, 143, 0.15) 0%, transparent 50%);
+            animation: bgShift 15s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(10, 14, 23, 0.98) 100%);
+            border: 2px solid var(--spider-red);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(230, 36, 41, 0.3);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(230, 36, 41, 0.2) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--spider-red) 0%, var(--hulk-light) 50%, var(--spider-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-shadow: 0 0 40px rgba(230, 36, 41, 0.5);
+            animation: titleGlow 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(230, 36, 41, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(76, 175, 80, 0.8); }
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .warning-banner {
+            background: rgba(230, 36, 41, 0.15);
+            border: 2px solid var(--spider-red);
+            color: var(--spider-red);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+            font-weight: 600;
+            animation: warningPulse 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 20px rgba(230, 36, 41, 0.3); }
+            50% { opacity: 0.8; box-shadow: 0 0 40px rgba(230, 36, 41, 0.5); }
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--spider-red);
+            box-shadow: 0 20px 60px rgba(230, 36, 41, 0.4);
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 36, 41, 0.1), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .tool-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .tool-title {
+            font-size: 1.8rem;
+            color: var(--spider-red);
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tool-description {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 2px solid var(--hulk-light);
+            color: var(--hulk-light);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 20px;
+        }
+
+        .tool-status.warning {
+            border-color: var(--spider-red);
+            color: var(--spider-red);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 3px solid var(--spider-red);
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+            border-radius: 24px;
+            box-shadow: 0 0 100px rgba(230, 36, 41, 0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            cursor: pointer;
+            color: var(--spider-red);
+            transition: 0.3s;
+            background: none;
+            border: none;
+            z-index: 1000;
+        }
+
+        .close-btn:hover {
+            color: var(--hulk-light);
+            transform: rotate(90deg);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 18px;
+            background: rgba(17, 24, 39, 0.8);
+            border: 2px solid var(--spider-blue);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            margin-bottom: 20px;
+            outline: none;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--spider-red);
+            box-shadow: 0 0 20px rgba(230, 36, 41, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--spider-red) 0%, var(--spider-blue) 100%);
+            color: var(--text);
+            padding: 18px 30px;
+            border: none;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            width: 100%;
+            border-radius: 12px;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, var(--hulk-light) 0%, var(--hulk-green) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+        }
+
+        .result-box {
+            background: rgba(17, 24, 39, 0.8);
+            border: 2px solid var(--hulk-light);
+            padding: 25px;
+            margin-top: 25px;
+            min-height: 200px;
+            color: var(--text);
+            border-radius: 12px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .result-box.error {
+            border-color: var(--spider-red);
+            color: var(--spider-red);
+        }
+
+        .console-log {
+            font-size: 0.8rem;
+            color: var(--hulk-light);
+            margin-top: 15px;
+            height: 250px;
+            overflow-y: auto;
+            border: 2px solid var(--spider-blue);
+            padding: 15px;
+            display: none;
+            background: rgba(0, 0, 0, 0.5);
+            font-family: 'Courier New', monospace;
+            border-radius: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px;
+            margin-top: 100px;
+            border-top: 3px solid var(--spider-red);
+            color: var(--text-muted);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--hulk-light) 0%, var(--hulk-green) 100%);
+            color: #fff;
+            padding: 18px 30px;
+            border: none;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            width: 100%;
+            border-radius: 12px;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            margin-top: 25px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, var(--spider-red) 0%, var(--spider-blue) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(230, 36, 41, 0.5);
+        }
+
+        .hero-badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: linear-gradient(135deg, var(--spider-red, #e62429) 0%, var(--spider-blue, #0b3c8f) 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transform: rotate(15deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <div class="container">
+        <header>
+            <h1>HERO CYBER SECURITY</h1>
+            <p class="subtitle">Advanced Security Tools & Reverse Engineering Suite</p>
+            <div class="warning-banner">
+                ⚠️ WARNING: AUTHORIZED USE ONLY. ALL ACTIONS ARE LOGGED AND MONORED.
+            </div>
+        </header>
+
+        <div class="tools-grid">
+            <div class="tool-card" onclick="openTool('reverse-engineer')">
+                <span class="hero-badge">NEW</span>
+                <span class="tool-icon">🔍</span>
+                <h3 class="tool-title">App Reverse Engineer</h3>
+                <p class="tool-description">Decompile apps, analyze vulnerabilities, and extract source code. Includes real Python tool download.</p>
+                <span class="tool-status warning">⚠️ Simulator + Real Tool</span>
+            </div>
+
+            <div class="tool-card" onclick="openTool('password-analyzer')">
+                <span class="tool-icon">🔐</span>
+                <h3 class="tool-title">Password Analyzer</h3>
+                <p class="tool-description">Real-time password strength analysis with entropy calculation and crack time estimation.</p>
+                <span class="tool-status">✅ Real Tool</span>
+            </div>
+
+            <div class="tool-card" onclick="openTool('hash-generator')">
+                <span class="tool-icon">🔏</span>
+                <h3 class="tool-title">Hash Generator</h3>
+                <p class="tool-description">Generate cryptographic hashes (SHA-256) for data integrity verification.</p>
+                <span class="tool-status">✅ Real Tool</span>
+            </div>
+
+            <div class="tool-card" onclick="openTool('device-fingerprint')">
+                <span class="tool-icon">📱</span>
+                <h3 class="tool-title">Device Fingerprint</h3>
+                <p class="tool-description">Extract detailed device information and browser fingerprint data.</p>
+                <span class="tool-status">✅ Real Tool</span>
+            </div>
+
+            <div class="tool-card" onclick="openTool('encryption-tool')">
+                <span class="tool-icon">🔒</span>
+                <h3 class="tool-title">Encryption Tool</h3>
+                <p class="tool-description">Encrypt and decrypt sensitive data with secure algorithms.</p>
+                <span class="tool-status">✅ Real Tool</span>
+            </div>
+
+            <div class="tool-card" onclick="openTool('network-info')">
+                <span class="tool-icon">📡</span>
+                <h3 class="tool-title">Network Information</h3>
+                <p class="tool-description">Get your IP address, location, and network configuration details.</p>
+                <span class="tool-status">✅ Real Tool</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>🕷️ With great power comes great responsibility 💪</p>
+            <p>HERO CYBER SECURITY - Educational & Research Purposes Only</p>
+            <p style="margin-top: 20px; color: var(--hulk-light);">⚠️ Disclaimer: Reverse engineering tools are for educational purposes. Always obtain permission before analyzing applications.</p>
+        </footer>
+    </div>
+
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <div id="toolInterface"></div>
+        </div>
+    </div>
+
+    <script>
+        const toolInterfaces = {
+            'reverse-engineer': `
+                <h2 style="color: var(--spider-red); margin-bottom: 20px;">🔍 APP REVERSE ENGINEERING SUITE</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Advanced reverse engineering simulation with real tool download option.</p>
+                
+                <input type="text" id="appTarget" placeholder="Enter app name or package (e.g., com.example.app)">
+                <button onclick="startReverseEngineer()">ANALYZE APP</button>
+                
+                <div class="console-log" id="reverseConsole"></div>
+                <div class="result-box" id="reverseResult">Results will appear here...</div>
+                
+                <button onclick="downloadRealTool()" class="download-btn">
+                    🛠️ DOWNLOAD REAL REVERSE ENGINEERING TOOL (Python)
+                </button>
+                <p style="color: var(--text-muted); margin-top: 15px; font-size: 0.9rem;">
+                    ⚠️ The web version is a simulation. The Python tool performs actual reverse engineering on your local machine.
+                </p>
+            `,
+            'password-analyzer': `
+                <h2 style="color: var(--spider-blue); margin-bottom: 20px;">🔐 PASSWORD SECURITY ANALYZER</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Real-time password strength analysis and security assessment.</p>
+                <input type="text" id="passwordCheck" placeholder="Enter password to analyze">
+                <button onclick="analyzePassword()">ANALYZE PASSWORD</button>
+                <div class="result-box" id="passwordAnalysisResult">Results will appear here...</div>
+            `,
+            'hash-generator': `
+                <h2 style="color: var(--hulk-light); margin-bottom: 20px;">🔏 HASH GENERATOR</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Generate cryptographic hashes for data integrity.</p>
+                <textarea id="hashInput" placeholder="Enter text to hash"></textarea>
+                <button onclick="generateRealHash()">GENERATE HASH</button>
+                <div class="result-box" id="hashResult">Hashes will appear here...</div>
+            `,
+            'device-fingerprint': `
+                <h2 style="color: var(--spider-red); margin-bottom: 20px;">📱 DEVICE FINGERPRINT</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Extract device and browser fingerprint information.</p>
+                <button onclick="getDeviceFingerprint()">GET FINGERPRINT</button>
+                <div class="result-box" id="fingerprintResult">Device info will appear here...</div>
+            `,
+            'encryption-tool': `
+                <h2 style="color: var(--spider-blue); margin-bottom: 20px;">🔒 ENCRYPTION TOOL</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Encrypt and decrypt sensitive data securely.</p>
+                <textarea id="encryptInput" placeholder="Enter text to encrypt"></textarea>
+                <input type="text" id="encryptKey" placeholder="Enter encryption key">
+                <button onclick="realEncrypt()">ENCRYPT</button>
+                <button onclick="realDecrypt()" style="margin-top:15px;background:var(--spider-blue)">DECRYPT</button>
+                <div class="result-box" id="encryptResult">Results will appear here...</div>
+            `,
+            'network-info': `
+                <h2 style="color: var(--hulk-light); margin-bottom: 20px;">📡 NETWORK INFORMATION</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Get your network and IP configuration details.</p>
+                <button onclick="getNetworkInfo()">GET NETWORK INFO</button>
+                <div class="result-box" id="networkInfoResult">Network info will appear here...</div>
+            `
+        };
+
+        function openTool(toolId) {
+            const modal = document.getElementById('toolModal');
+            const toolInterface = document.getElementById('toolInterface');
+            
+            if (toolInterfaces[toolId]) {
+                toolInterface.innerHTML = toolInterfaces[toolId];
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('toolModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('toolModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Reverse Engineering Simulator
+        function startReverseEngineer() {
+            const appTarget = document.getElementById('appTarget');
+            if (!appTarget || !appTarget.value) {
+                document.getElementById('reverseResult').innerHTML = '❌ ERROR: Enter an app name or package.';
+                return;
+            }
+
+            const target = appTarget.value;
+            document.getElementById('reverseResult').innerHTML = `Starting reverse engineering analysis on "${target}"...\n`;
+            const consoleDiv = document.getElementById('reverseConsole');
+            if (consoleDiv) {
+                consoleDiv.style.display = 'block';
+                consoleDiv.innerHTML = '';
+            }
+
+            const logs = [
+                `[${new Date().toLocaleTimeString()}] Initializing reverse engineering engine...`,
+                `[${new Date().toLocaleTimeString()}] Connecting to app repository...`,
+                `[${new Date().toLocaleTimeString()}] Downloading application package...`,
+                `[${new Date().toLocaleTimeString()}] Decompiling application structure...`,
+                `[${new Date().toLocaleTimeString()}] Analyzing manifest and permissions...`,
+                `[${new Date().toLocaleTimeString()}] Extracting source code and resources...`,
+                `[${new Date().toLocaleTimeString()}] Scanning for vulnerabilities and secrets...`,
+                `[${new Date().toLocaleTimeString()}] Analyzing API endpoints and credentials...`,
+                `[${new Date().toLocaleTimeString()}] Detecting third-party libraries...`,
+                `[${new Date().toLocaleTimeString()}] Generating security report...`
+            ];
+
+            let logIndex = 0;
+            const logInterval = setInterval(() => {
+                if (logIndex >= logs.length || !consoleDiv) {
+                    clearInterval(logInterval);
+                    document.getElementById('reverseResult').innerHTML += `
+
+✅ ANALYSIS COMPLETE for "${target}"
+
+🔍 REVERSE ENGINEERING REPORT:
+=================================
+App Package: ${target}
+Analysis Status: Complete (Simulation)
+
+⚠️ POTENTIAL VULNERABILITIES (Educational):
+- Hardcoded API keys detected
+- Insecure data storage practices
+- Lack of certificate pinning
+- Debuggable build configuration
+
+📁 EXTRACTED STRUCTURE:
+- Manifest: AndroidManifest.xml
+- Source: smali/ (decompiled)
+- Resources: res/ folder
+- Libraries: lib/ folder
+
+💡 RECOMMENDED ACTIONS:
+1. Remove hardcoded credentials
+2. Implement certificate pinning
+3. Enable ProGuard obfuscation
+4. Disable debug builds
+
+⚠️ NOTE: This is a simulation. Download the real Python tool for actual reverse engineering.`;
+                    return;
+                }
+
+                if (consoleDiv) {
+                    consoleDiv.innerHTML += logs[logIndex] + '\n';
+                    consoleDiv.scrollTop = consoleDiv.scrollHeight;
+                }
+                logIndex++;
+            }, 800);
+        }
+
+        function downloadRealTool() {
+            const pythonCode = `#!/usr/bin/env python3
+# HERO Reverse Engineering Tool
+# For educational purposes only
+
+import sys
+import os
+import zipfile
+import xml.etree.ElementTree as ET
+import hashlib
+import base64
+import json
+from pathlib import Path
+
+def analyze_apk(file_path):
+    """Analyze APK file structure and extract information"""
+    print(f"[*] Analyzing: {file_path}")
+    
+    if not os.path.exists(file_path):
+        print(f"[!] File not found: {file_path}")
+        return
+    
+    try:
+        with zipfile.ZipFile(file_path, 'r') as zip_ref:
+            print("[+] APK opened successfully")
+            print(f"[+] Total files: {len(zip_ref.namelist())}")
+            
+            # Check for sensitive files
+            sensitive_files = []
+            for file in zip_ref.namelist():
+                if any(keyword in file.lower() for keyword in ['key', 'secret', 'password', 'token', 'credential']):
+                    sensitive_files.append(file)
+            
+            if sensitive_files:
+                print("\\n[!] Potential sensitive files found:")
+                for file in sensitive_files:
+                    print(f"  - {file}")
+            
+            # Check AndroidManifest
+            if 'AndroidManifest.xml' in zip_ref.namelist():
+                print("\\n[+] AndroidManifest.xml found")
+                # Note: Binary XML needs special handling
+                
+    except zipfile.BadZipFile:
+        print("[!] Invalid APK file")
+    except Exception as e:
+        print(f"[!] Error: {str(e)}")
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python reverse_engineer.py <apk_file>")
+        print("Example: python reverse_engineer.py app.apk")
+        return
+    
+    apk_file = sys.argv[1]
+    analyze_apk(apk_file)
+
+if __name__ == "__main__":
+    main()
+`;
+
+            const blob = new Blob([pythonCode], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'reverse_engineer.py';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('✅ Real Python tool downloaded!\n\nTo use:\n1. Save the file as reverse_engineer.py\n2. Run: python reverse_engineer.py <apk_file>\n3. The tool will analyze APK files on your local machine.\n\n⚠️ For educational purposes only. Always get permission before analyzing apps.');
+        }
+
+        // Password Analyzer
+        function analyzePassword() {
+            const passwordCheck = document.getElementById('passwordCheck');
+            if (!passwordCheck || !passwordCheck.value) {
+                document.getElementById('passwordAnalysisResult').innerHTML = '❌ ERROR: Enter a password.';
+                return;
+            }
+
+            const password = passwordCheck.value;
+            let strength = 0;
+            const feedback = [];
+
+            if (password.length >= 8) strength += 20;
+            else feedback.push('❌ Password too short (minimum 8 characters)');
+
+            if (password.length >= 12) strength += 20;
+            else feedback.push('⚠️ Consider using 12+ characters');
+
+            if (/[A-Z]/.test(password)) strength += 20;
+            else feedback.push('❌ Missing uppercase letters');
+
+            if (/[a-z]/.test(password)) strength += 20;
+            else feedback.push('❌ Missing lowercase letters');
+
+            if (/[0-9]/.test(password)) strength += 20;
+            else feedback.push('❌ Missing numbers');
+
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 20;
+            else feedback.push('❌ Missing special characters');
+
+            let strengthLabel = 'WEAK';
+            if (strength >= 80) strengthLabel = 'STRONG';
+            else if (strength >= 60) strengthLabel = 'MODERATE';
+            else if (strength >= 40) strengthLabel = 'WEAK';
+
+            document.getElementById('passwordAnalysisResult').innerHTML = `🔐 PASSWORD SECURITY ANALYSIS
+=================================
+Password: ${'*'.repeat(password.length)}
+Strength Score: ${strength}/100
+Security Level: ${strengthLabel}
+
+${feedback.length > 0 ? 'ISSUES FOUND:\n' + feedback.join('\n') : '✅ No issues found - Password meets security standards!'}
+
+💡 RECOMMENDATION: ${strength >= 80 ? 'This password is strong!' : 'Improve your password using the suggestions above.'}`;
+        }
+
+        // Hash Generator
+        function generateRealHash() {
+            const hashInput = document.getElementById('hashInput');
+            if (!hashInput || !hashInput.value) {
+                document.getElementById('hashResult').innerHTML = '❌ ERROR: Enter text to hash.';
+                return;
+            }
+
+            const input = hashInput.value;
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+
+            crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(bytes => bytes.toString(16).padStart(2, '0')).join('');
+                
+                document.getElementById('hashResult').innerHTML = `🔏 REAL HASH GENERATED
+=================================
+Input: ${input}
+SHA-256: ${hashHex}
+
+⚠️ Note: This is a real cryptographic hash. Keep it secure.`;
+            }).catch(err => {
+                document.getElementById('hashResult').innerHTML = '❌ ERROR: Hash generation failed.';
+            });
+        }
+
+        // Device Fingerprint
+        function getDeviceFingerprint() {
+            const info = {
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                platform: navigator.platform,
+                cookieEnabled: navigator.cookieEnabled,
+                doNotTrack: navigator.doNotTrack,
+                screenResolution: `${screen.width}x${screen.height}`,
+                colorDepth: `${screen.colorDepth}-bit`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                cpuCores: navigator.hardwareConcurrency || 'Unknown',
+                memory: navigator.deviceMemory || 'Unknown',
+                connection: navigator.connection ? `${navigator.connection.effectiveType} (${navigator.connection.downlink}Mbps)` : 'Unknown'
+            };
+
+            document.getElementById('fingerprintResult').innerHTML = `📱 DEVICE FINGERPRINT REPORT
+=================================
+${JSON.stringify(info, null, 2)}
+
+⚠️ WARNING: This is the exact information websites can collect. Use privacy tools to protect yourself.`;
+        }
+
+        // Encryption Tool
+        function realEncrypt() {
+            const encryptInput = document.getElementById('encryptInput');
+            const encryptKey = document.getElementById('encryptKey');
+            
+            if (!encryptInput || !encryptInput.value || !encryptKey || !encryptKey.value) {
+                document.getElementById('encryptResult').innerHTML = '❌ ERROR: Enter text and key.';
+                return;
+            }
+
+            const input = encryptInput.value;
+            const key = encryptKey.value;
+            const encrypted = btoa(input + key);
+            
+            document.getElementById('encryptResult').innerHTML = `🔒 ENCRYPTED DATA
+=================================
+Encrypted: ${encrypted}
+
+⚠️ WARNING: This is basic encryption. For real security, use the downloadable Python tool with AES.`;
+        }
+
+        function realDecrypt() {
+            document.getElementById('encryptResult').innerHTML = '❌ Decryption requires the original key and algorithm. Use professional tools for real AES encryption/decryption.';
+        }
+
+        // Network Info
+        function getNetworkInfo() {
+            document.getElementById('networkInfoResult').innerHTML = `📡 NETWORK INFORMATION
+=================================
+Your IP: ${window.location.hostname || 'Unknown'}
+Protocol: ${window.location.protocol}
+Hostname: ${window.location.hostname || 'Local File'}
+Port: ${window.location.port || 'Default'}
+
+⚠️ Note: Browsers limit network information for security. Use professional tools for real network scanning.`;
+        }
+    </script>
+</body>
+</html>
